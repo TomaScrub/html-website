@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>API stuff</title>
+<link rel="icon" type="image/x-ico" href="favicon3.jpg">
+
+</head>
+
+<body style="background-color:rgb(176, 219, 58);">
+    <header>
+        <div class="navcontainer" id="navid">
+            <a href="..\index.html">Home</a>
+            <a href="teto.html">Teto's Territory</a>
+            <a href="secondary html.html">Neru Dungeon</a>
+            <a href="ado's palace.html">Ado's Palace</a>
+            <a href="lukalukanightfever.html">Luka's Night Fever</a>
+            <a href="apistuff.html">API stuff</a>
+        </div>
+    </header>
+    <style>
+a:link {
+    color:gold ;
+    background-color: transparent;
+    text-decoration: double;
+}
+a:hover {
+    color:deeppink ;
+    background-color: transparent;
+    text-decoration: double;
+}
+ 
+a:active{
+    color:red;
+    background-color: transparent;
+    text-decoration: line-through;
+}
+ 
+a:link, a:visited {
+    background-color: azure;
+    padding: 15px 25px;
+    text-align: center;
+    display: inline-block
+}
+ 
+a:hover, a:active {
+    background-color: black;
+}
+</style>
+<button id="newcat">New Cat</button>
+<img id="catImg" alt="Random cat">
+
+<script>
+    const catImg = document.getElementById("catImg");
+    const btn = document.getElementById("newcat");
+    let currentObjectUrl = null;
+
+    async function loadCat() {
+        btn.disabled = true;
+        try {
+            const resp = await fetch(`https://cataas.com/cat/gif?${Date.now()}`, { cache: 'no-store' });
+            if (!resp.ok) throw new Error('Network response was not ok');
+            const blob = await resp.blob();
+            if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+            currentObjectUrl = URL.createObjectURL(blob);
+            catImg.src = currentObjectUrl;
+        } catch (err) {
+            console.error('Failed to load cat:', err);
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    btn.addEventListener('click', loadCat);
+    loadCat();
+</script>
